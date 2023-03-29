@@ -21,7 +21,7 @@ CREATE TABLE rel_movies_actors (
 idRelMoviesActors int auto_increment primary key,
 fkActors int,
 fkMovies int,
-FOREIGN KEY (fkActor) REFERENCES actors (idActor),
+FOREIGN KEY (fkActors) REFERENCES actors (idActor),
 FOREIGN KEY (fkMovies) REFERENCES movies (idMovies)
 );
 
