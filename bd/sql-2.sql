@@ -21,3 +21,8 @@ SELECT * FROM actors;
 
 -- Eliminar con delete from *
 
+INSERT INTO users (user, password, name, email, plan_details)
+VALUES ("laura_dev", "laura", "Laura", "laura@gmail.com", "Standard"),
+("maria_dev", "maria", "Maria", "maria@gmail.com", "Standard"),
+("ester_dev", "ester", "Ester", "ester@gmail.com", "Standard");
+
