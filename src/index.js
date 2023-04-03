@@ -41,41 +41,55 @@ mysql
     console.error('Error de configuración: ' + err.stack);
   });
 
+  //hacemos la petición al servidor de filtar por genéro y ordenar
 
   server.get('/movies', (req, res) => {
-    let sql= 'SELECT * FROM movies';
-    console.log('Pidiendo a la base de datos información de películas.');
-    connection
-      .query(sql)
-      .then(([results, fields]) => {
-        console.log('Información recuperada:');
-        results.forEach((result) => {
-          console.log(result);
-        });
-  
-        res.json({
-          success: true,
-          movies:  results
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  });
-
-  server.get('/moviesFilter', (req, res) => {
     const gender = req.query.gender;
-    console.log(gender);
-    let sql= 'SELECT * FROM movies WHERE gender=?';
+    const order = req.query.sort;
     console.log('Pidiendo a la base de datos información de películas.');
+  if (gender ===""){
+    if (order ==='asc'){
+      connection
+        .query('SELECT * FROM movies ORDER BY title ASC')
+        .then(([results, fields]) => {
+          console.log('Información recuperada:');
+          results.forEach((result) => {
+            console.log(result);
+          });
+          res.json({
+            success: true,
+            movies:  results
+          });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }else{
+      connection
+        .query('SELECT * FROM movies ORDER BY title DESC')
+        .then(([results, fields]) => {
+          console.log('Información recuperada:');
+          results.forEach((result) => {
+            console.log(result);
+          });
+          res.json({
+            success: true,
+            movies:  results
+          });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  }else{
+    if(order==="asc"){
     connection
-      .query(sql , [gender])
+      .query('SELECT * FROM movies WHERE gender = ? ORDER BY title ASC', [gender])
       .then(([results, fields]) => {
         console.log('Información recuperada:');
         results.forEach((result) => {
           console.log(result);
         });
-  
         res.json({
           success: true,
           movies:  results
@@ -84,4 +98,21 @@ mysql
       .catch((err) => {
         throw err;
       });
-  });
+    }else{
+    connection
+    .query('SELECT * FROM movies WHERE gender = ? ORDER BY title DESC', [gender])
+    .then(([results, fields]) => {
+      console.log('Información recuperada:');
+      results.forEach((result) => {
+        console.log(result);
+      });
+      res.json({
+        success: true,
+        movies:  results
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+  }
+  }});
