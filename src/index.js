@@ -63,3 +63,25 @@ mysql
       });
   });
 
+  server.get('/moviesFilter', (req, res) => {
+    const gender = req.query.gender;
+    console.log(gender);
+    let sql= 'SELECT * FROM movies WHERE gender=?';
+    console.log('Pidiendo a la base de datos información de películas.');
+    connection
+      .query(sql , [gender])
+      .then(([results, fields]) => {
+        console.log('Información recuperada:');
+        results.forEach((result) => {
+          console.log(result);
+        });
+  
+        res.json({
+          success: true,
+          movies:  results
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
