@@ -116,3 +116,11 @@ mysql
     });
   }
   }});
+
+  const staticServerPathPublic = './src/public-react/'; 
+  // En esta carpeta ponemos los ficheros estáticos
+  server.use(express.static(staticServerPathPublic));
+
+  const staticServerPathImages = './src/public-movies-images/'; 
+  // En esta carpeta ponemos los ficheros estáticos
+  server.use(express.static(staticServerPathImages));
