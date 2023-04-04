@@ -14,7 +14,7 @@ server.listen(serverPort, () => {
 });
 
 //guardar la conexión
-
+server.set('view engine', 'ejs');
 let connection;
 
 //crear la conexion mySQL
@@ -117,10 +117,26 @@ mysql
   }
   }});
 
-  const staticServerPathPublic = './src/public-react/'; 
-  // En esta carpeta ponemos los ficheros estáticos
-  server.use(express.static(staticServerPathPublic));
+  server.get('/movie/:movieId', (req, res) => {
+    console.log(req.params.movieId);
+    const foundMovie = `SELECT * FROM movies WHERE idMovies=?`;
+    connection
+    .query(foundMovie , [req.params.movieId])
+    .then(([results, fields]) => {
+      console.log('Información recuperada:');
+      // res.render -> representa una plantilla de vista
+      res.render('movie' , results[0]);
+    })
+    .catch((err) => {
+      throw err;
+    });
+   });
 
-  const staticServerPathImages = './src/public-movies-images/'; 
-  // En esta carpeta ponemos los ficheros estáticos
-  server.use(express.static(staticServerPathImages));
+   // rutas estaticas de diferente forma.
+  const staticServerPathPublic = './src/public-react/'; 
+  server.use(express.static(staticServerPathPublic));
+  
+  server.use(express.static('./src/public-movies-images/'));
+  server.use(express.static('./src/public-movies-css/'));
+
+ 
