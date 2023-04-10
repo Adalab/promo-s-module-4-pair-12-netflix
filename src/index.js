@@ -7,11 +7,15 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
+
 //arrancamos el servidor
 const serverPort = 4000;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
+
+const dbConnect = require('../config/connection');
+dbConnect();
 
 //guardar la conexión
 server.set('view engine', 'ejs');
@@ -130,6 +134,19 @@ mysql
     .catch((err) => {
       throw err;
     });
+   });
+
+   // endpoint para mongoDB
+   const Movies = require ('../models/movies');
+   const Actors = require ('../models/actors');
+   const Users = require ('../models/users');
+
+   server.get('/movie_all_mongo/', (req, res) => {
+    if (req.query.gender ==='') {
+      Movies.find( {} ).then(results=>{res.json.results})
+    } else {
+      Movies.find( {gender:req.query.gender} ).then(results=>{res.json.results})
+    }
    });
 
    // rutas estaticas de diferente forma.
