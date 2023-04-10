@@ -151,18 +151,12 @@ mysql
         movies:  results
       })
     })
-      .catch((err) => {
-        throw err;
-      });
     } else {
       Movies.find( {gender:gender} )
       .then((results) =>{
       res.json({
         success: true,
         movies:  results
-      })
-      .catch((err) => {
-        throw err;
       })
       });
     }
