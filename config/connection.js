@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const dbConnect = () => {
-  const user = 'admin';
-  const pass = 'WEMqHJQU90NEGa6w';
+  const user = 'nataliapuertac';
+  const pass = 'Msnn4A6Chx51dXU2';
   const dbName = 'netflix';
 
   const uri = `mongodb+srv://${user}:${pass}@cluster0.7sdcrz4.mongodb.net/${dbName}?retryWrites=true&w=majority`;
@@ -15,4 +15,4 @@ const dbConnect = () => {
 };
 module.exports = dbConnect;
 
-//WEMqHJQU90NEGa6w
+//WEMqHJQU90NEGa6w --> admin
