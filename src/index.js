@@ -143,9 +143,27 @@ mysql
 
    server.get('/movie_all_mongo/', (req, res) => {
     if (req.query.gender ==='') {
-      Movies.find( {} ).then(results=>{res.json.results})
+      Movies.find( {} )
+      .then((results) =>{
+      res.json({
+        success: true,
+        movies:  results
+      })
+    })
+      .catch((err) => {
+        throw err;
+      });
     } else {
-      Movies.find( {gender:req.query.gender} ).then(results=>{res.json.results})
+      Movies.find( {gender:req.query.gender} )
+      .then((results) =>{
+      res.json({
+        success: true,
+        movies:  results
+      })
+      .catch((err) => {
+        throw err;
+      })
+      });
     }
    });
 
