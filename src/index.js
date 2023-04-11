@@ -45,81 +45,81 @@ mysql
     console.error('Error de configuración: ' + err.stack);
   });
 
-  //hacemos la petición al servidor de filtar por genéro y ordenar
+  // hacemos la petición al servidor de filtar por genéro y ordenar
 
-  // server.get('/movies', (req, res) => {
-  //   const gender = req.query.gender;
-  //   const order = req.query.sort;
-  //   console.log('Pidiendo a la base de datos información de películas.');
-  // if (gender ===""){
-  //   if (order ==='asc'){
-  //     connection
-  //       .query('SELECT * FROM movies ORDER BY title ASC')
-  //       .then(([results, fields]) => {
-  //         console.log('Información recuperada:');
-  //         results.forEach((result) => {
-  //           console.log(result);
-  //         });
-  //         res.json({
-  //           success: true,
-  //           movies:  results
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         throw err;
-  //       });
-  //   }else{
-  //     connection
-  //       .query('SELECT * FROM movies ORDER BY title DESC')
-  //       .then(([results, fields]) => {
-  //         console.log('Información recuperada:');
-  //         results.forEach((result) => {
-  //           console.log(result);
-  //         });
-  //         res.json({
-  //           success: true,
-  //           movies:  results
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         throw err;
-  //       });
-  //   }
-  // }else{
-  //   if(order==="asc"){
-  //   connection
-  //     .query('SELECT * FROM movies WHERE gender = ? ORDER BY title ASC', [gender])
-  //     .then(([results, fields]) => {
-  //       console.log('Información recuperada:');
-  //       results.forEach((result) => {
-  //         console.log(result);
-  //       });
-  //       res.json({
-  //         success: true,
-  //         movies:  results
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       throw err;
-  //     });
-  //   }else{
-  //   connection
-  //   .query('SELECT * FROM movies WHERE gender = ? ORDER BY title DESC', [gender])
-  //   .then(([results, fields]) => {
-  //     console.log('Información recuperada:');
-  //     results.forEach((result) => {
-  //       console.log(result);
-  //     });
-  //     res.json({
-  //       success: true,
-  //       movies:  results
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     throw err;
-  //   });
-  // }
-  // }});
+  server.get('/movies', (req, res) => {
+    const gender = req.query.gender;
+    const order = req.query.sort;
+    console.log('Pidiendo a la base de datos información de películas.');
+  if (gender ===""){
+    if (order ==='asc'){
+      connection
+        .query('SELECT * FROM movies ORDER BY title ASC')
+        .then(([results, fields]) => {
+          console.log('Información recuperada:');
+          results.forEach((result) => {
+            console.log(result);
+          });
+          res.json({
+            success: true,
+            movies:  results
+          });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }else{
+      connection
+        .query('SELECT * FROM movies ORDER BY title DESC')
+        .then(([results, fields]) => {
+          console.log('Información recuperada:');
+          results.forEach((result) => {
+            console.log(result);
+          });
+          res.json({
+            success: true,
+            movies:  results
+          });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  }else{
+    if(order==="asc"){
+    connection
+      .query('SELECT * FROM movies WHERE gender = ? ORDER BY title ASC', [gender])
+      .then(([results, fields]) => {
+        console.log('Información recuperada:');
+        results.forEach((result) => {
+          console.log(result);
+        });
+        res.json({
+          success: true,
+          movies:  results
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+    }else{
+    connection
+    .query('SELECT * FROM movies WHERE gender = ? ORDER BY title DESC', [gender])
+    .then(([results, fields]) => {
+      console.log('Información recuperada:');
+      results.forEach((result) => {
+        console.log(result);
+      });
+      res.json({
+        success: true,
+        movies:  results
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+  }
+  }});
 
   server.get('/movie/:movieId', (req, res) => {
     console.log(req.params.movieId);
@@ -137,30 +137,50 @@ mysql
    });
 
    // endpoint para mongoDB
+
    const Movies = require ('../models/movies');
    const Actors = require ('../models/actors');
    const Users = require ('../models/users');
 
    server.get('/movies_all_mongo/', (req, res) => {
-    const gender = req.query.gender;
-    if (gender ==='') {
-      Movies.find( {} )
-      .then((results) =>{
-      res.json({
-        success: true,
-        movies:  results
-      })
-    })
-    } else {
-      Movies.find( {gender:gender} )
-      .then((results) =>{
-      res.json({
-        success: true,
-        movies:  results
-      })
-      });
+    const gender = req.query.gender.toLocaleLowerCase();
+    const sort = req.query.sort.toLocaleLowerCase();
+
+    const conditions = {};
+
+    if (gender !== '') {
+      conditions.gender = gender;
     }
+    Movies.find( conditions ).sort({title: sort==='asc'?1:-1})
+      .then((results) =>{
+      res.json({
+        success: true,
+        movies:  results
+      })
+    });
+
+      // if( sort === 'asc' ) {
+    //   Movies.find( conditions ).sort({title: 1})
+    //   .then((results) =>{
+    //   res.json({
+    //     success: true,
+    //     movies:  results
+    //   })
+    // });
+    // }
+    // else {
+    //   Movies.find( conditions ).sort({title: -1})
+    //   .then((results) =>{
+    //   res.json({
+    //     success: true,
+    //     movies:  results
+    //   })
+    // });
+    // }
+
    });
+
+   
 
    // rutas estaticas de diferente forma.
   const staticServerPathPublic = './src/public-react/'; 
