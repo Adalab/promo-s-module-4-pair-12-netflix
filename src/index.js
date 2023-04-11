@@ -203,6 +203,20 @@ mysql
     });
 
 
+    // endpoint para obtener películas favoritas
+
+    server.get('/favorites-list', (req, res) => {
+      Favorites.find().populate({
+        path: 'users',
+        select: 'name',
+      })
+      .then((response) => res.json(response))
+      .catch((error) => {
+        console.log(error);
+      });
+    });
+
+
    // rutas estaticas de diferente forma.
   const staticServerPathPublic = './src/public-react/'; 
   server.use(express.static(staticServerPathPublic));
