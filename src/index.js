@@ -141,6 +141,7 @@ mysql
    const Movies = require ('../models/movies');
    const Actors = require ('../models/actors');
    const Users = require ('../models/users');
+   const Favorites = require ('../models/favorites');
 
    server.get('/movies_all_mongo/', (req, res) => {
     const gender = req.query.gender.toLocaleLowerCase();
@@ -179,6 +180,23 @@ mysql
     // }
 
    });
+
+   // endpoint para añadir películas favoritas
+
+   server.post('/favorites-add', (req, res) => {
+    Favorites.find()
+    .populate({
+      path: 'movies',
+      select:'_id title gender image category date',
+    })
+    const query = Movies.find({}, (err, docs) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(docs);
+      }
+    });
+  });
 
    
 
