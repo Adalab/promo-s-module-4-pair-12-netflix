@@ -184,21 +184,24 @@ mysql
    // endpoint para añadir películas favoritas
 
    server.post('/favorites-add', (req, res) => {
-    Favorites.find()
-    .populate({
-      path: 'movies',
-      select:'_id title gender image category date',
-    })
-    const query = Movies.find({}, (err, docs) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(docs);
-      }
+    let idMovie = '642d3a4ae7b2d3b215e3919a';
+    let idUser = '642d3c09e7b2d3b215e3919d';
+    const favorites = new Favorites(
+    {
+      idUser: idMovie,
+      idMovie: idUser,
+      score: req.body.score
     });
-  });
+    favorites
+      .save()
+      .then((docs) => {
+        res.json(docs);
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
+    });
 
-   
 
    // rutas estaticas de diferente forma.
   const staticServerPathPublic = './src/public-react/'; 
