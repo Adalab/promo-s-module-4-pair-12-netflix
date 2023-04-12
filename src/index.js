@@ -188,8 +188,8 @@ mysql
     let idUser = '642d3a4ae7b2d3b215e3919a';
     const favorites = new Favorites(
     {
-      idUser: idUser,
-      idMovie: idMovie,
+      users: idUser,
+      movies: idMovie,
       score: req.body.score
     });
     favorites
@@ -205,11 +205,8 @@ mysql
 
     // endpoint para obtener películas favoritas
 
-    server.get('/favorites-list', (req, res) => {
-      Favorites.find({idMovie:'642d3c09e7b2d3b215e3919d'}).populate({
-        path: 'users',
-        select: 'name',
-      })
+    server.get('/favorites-list/:user', (req, res) => {
+      Favorites.find({Users:req.params.user}).populate('Movies')
       .then((response) => res.json(response))
       .catch((error) => {
         console.log(error);
