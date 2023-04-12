@@ -184,12 +184,12 @@ mysql
    // endpoint para añadir películas favoritas
 
    server.post('/favorites-add', (req, res) => {
-    let idMovie = '642d3a4ae7b2d3b215e3919a';
-    let idUser = '642d3c09e7b2d3b215e3919d';
+    let idMovie = '642d3c09e7b2d3b215e3919d';
+    let idUser = '642d3a4ae7b2d3b215e3919a';
     const favorites = new Favorites(
     {
-      idUser: idMovie,
-      idMovie: idUser,
+      idUser: idUser,
+      idMovie: idMovie,
       score: req.body.score
     });
     favorites
@@ -206,7 +206,7 @@ mysql
     // endpoint para obtener películas favoritas
 
     server.get('/favorites-list', (req, res) => {
-      Favorites.find().populate({
+      Favorites.find({idMovie:'642d3c09e7b2d3b215e3919d'}).populate({
         path: 'users',
         select: 'name',
       })
